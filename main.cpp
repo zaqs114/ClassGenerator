@@ -10,22 +10,20 @@ int main() {
 
     cout << "Class name:"<< endl;
     cin >> className;
+    
     cout << "Number of fields you want to create:"<<endl;
     cin >> n;
+    
     cout << "Field names:"<<endl;
     string fieldNameTable [n];
-    string fieldName;
     for (int i=0; i<n; i++){
-        cin >> fieldName;
-        fieldNameTable[i]=fieldName;
+        cin >> fieldNameTable[i];
     }
 
     cout<<"Field types:"<<endl;
-    string fieldTypeTable [n+1];
-    string fieldType;
+    string fieldTypeTable [n];
     for (int i=0; i<n; i++){
-        cin >> fieldType;
-        fieldTypeTable[i]=fieldType;
+        cin >> fieldTypeTable[i];
     }
 
     fstream cppFile;
