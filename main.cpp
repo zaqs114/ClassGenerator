@@ -21,7 +21,7 @@ int main() {
     }
 
     cout<<"Field types:"<<endl;
-    string fieldTypeTable [n];
+    string fieldTypeTable [n+1];
     string fieldType;
     for (int i=0; i<n; i++){
         cin >> fieldType;
@@ -34,56 +34,74 @@ int main() {
     cppFile.open(className+".cpp", ios::out );
     hppFile.open(className+".h", ios::out);
 
+    //hpp
     hppFile << "#pragma once"<<endl;
     hppFile << "using namespace std; "<< endl;
     hppFile << "#include <iostream> "<< endl;
     hppFile<< endl;
-    hppFile <<"class "+className+"{";
+    hppFile <<"class "+className+"{"<<endl;
 
+    //public
     hppFile<<"public:"<<endl;
-    hppFile<<className+"("<<endl;
+    //constructor
+    hppFile<<"\t"+className+"();"<<endl;
+    hppFile<<"\t"+className+"(";
 
     for(int i=0; i<n; i++) {
-        hppFile<<fieldTypeTable[i]+" "+fieldNameTable[i]+",";
+        if(i==n-1){
+            hppFile << fieldTypeTable[i] + " " + fieldNameTable[i];
+        }else {
+            hppFile << fieldTypeTable[i] + " " + fieldNameTable[i] + ",";
+        }
     }
     hppFile<<");"<<endl;
 
+    //getters and setters
     for(int i=0; i<n; i++) {
 
-        hppFile << "void set" + fieldNameTable[i] + "(" + fieldTypeTable[i] +" "+ fieldNameTable[i] + ");" << endl;
-        hppFile << fieldTypeTable[i]+" get" + fieldNameTable[i] + "();" << endl;
+        hppFile << "\tvoid set" + fieldNameTable[i] + "(" + fieldTypeTable[i] +" "+ fieldNameTable[i] + ");" << endl;
+        hppFile << "\t"+fieldTypeTable[i]+" get" + fieldNameTable[i] + "();" << endl;
     }
 
-
+    //variables
     hppFile<<"protected:"<<endl;
     for(int i=0; i<n; i++){
-        hppFile<<fieldTypeTable[i]+" "+fieldNameTable[i]+";"<<endl;
+        hppFile<<"\t"+fieldTypeTable[i]+" "+fieldNameTable[i]+";"<<endl;
 
     }
     hppFile<<"};"<<endl;
 
-    cppFile<<"#inlcude "+ className + ".h\""<<endl;
+    //cpp
+    cppFile<<"#include \""+ className + ".h\""<<endl;
     cppFile<<endl;
+    //getters and setters
     for(int i=0; i<n; i++) {
         cppFile<<"void "+className+"::set"+fieldNameTable[i]+"("+fieldTypeTable[i]+" "+fieldNameTable[i]+"){"<<endl;
-        cppFile<<className+"::"+fieldNameTable[i]+"="+fieldNameTable[i]+";"<<endl;
+        cppFile<<"\t"+className+"::"+fieldNameTable[i]+"="+fieldNameTable[i]+";"<<endl;
         cppFile<<"}"<<endl;
+        cppFile<<endl;
 
         cppFile << fieldTypeTable[i]+" "+className + "::get" + fieldNameTable[i]+"(){"<<endl;
-        cppFile <<"return " + fieldNameTable[i]+";"<<endl;
+        cppFile <<"\treturn " + fieldNameTable[i]+";"<<endl;
         cppFile<<"}"<<endl;
-
+        cppFile<<endl;
     }
     cppFile<< endl;
+
+    //constructor
     cppFile<<className+"::"+className+"(";
     for(int i=0; i<n; i++) {
-        fieldTypeTable[i]+" "+fieldNameTable[i]+",";
+        if(i==n-1){
+            cppFile<< fieldTypeTable[i]+" "+fieldNameTable[i];
+        }else {
+            cppFile << fieldTypeTable[i] + " " + fieldNameTable[i] + ", ";
+        }
     }
-    cppFile<<") : ";
-    for(int i=0; i<n; i++) {
-        cppFile<< fieldNameTable[i]+"("+fieldNameTable[i]+"),";
+    cppFile<<"){"<<endl;
+    for (int i=0; i<n; i++) {
+        cppFile << "set" +fieldNameTable[i]+"("+fieldNameTable[i]+");"<<endl;
     }
-    cppFile<<"{}"<<endl;
+    cppFile<<"}"<<endl;
 
     cppFile.close();
     hppFile.close();
